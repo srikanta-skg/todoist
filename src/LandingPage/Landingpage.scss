@@ -1,0 +1,65 @@
+.body{
+    margin: 0 20%;
+    display:flex;
+    flex-direction: column;
+}
+
+
+.landing-header{
+    display: flex;
+
+    .header-items{
+        padding: 16px ;
+        color: #575757;
+        font-size: 16px;
+    }
+
+    .header-items:nth-last-child(2) {
+        margin-left: 20%;
+    }
+
+    .header-items:last-child  {
+        padding-right: 0px !important;
+    }
+
+    .items:hover{
+        background-color: #fafafa;
+        border-bottom: 2px solid red;
+    }
+}
+
+.header-title{
+    margin-top: 5%;
+    font-size: 35px;
+
+    h1{
+        margin: 0px;
+        text-align: center;
+    }
+}
+
+.btn-start{
+    color : #ffff;
+    background-color: #e44232;
+    display: flex;
+    // min-height: 21px;
+    justify-content: center;
+    padding: 0px 20px;
+    border: 0px solid #e44232;;
+    border-radius: 9px;
+    margin: 30px auto 20px;
+    align-items: center;
+}
+
+.people-logo{
+    z-index: -1;
+    background-size: contain, cover;
+    width: 100%;
+    margin-top: -100px;
+    position: absolute;
+}
+
+.phone-logo{
+    margin-left: -10%;
+    width: 120%;
+}
