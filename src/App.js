@@ -1,6 +1,7 @@
 import logo from "./logo.svg";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import LandingPage from "./LandingPage/LandingPage";
+import  { Dashboard } from "./Dashboard/Dashboard"
 import "./App.css";
 
 // function App() {
@@ -28,8 +29,8 @@ const App = () => {
   return (
     <BrowserRouter>
       <Switch>
+        <Route path="/home" component={Dashboard} />
         <Route path="/" component={LandingPage} />
-        <Route path="/get-started" component={LandingPage} />
       </Switch>
     </BrowserRouter>
   );
