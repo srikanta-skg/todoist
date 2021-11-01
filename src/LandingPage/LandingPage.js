@@ -6,9 +6,10 @@ import people_logo from "./assets/people_logo.png";
 import phone_logo from "./assets/phone_logo.png";
 import review_logo from "./assets/review_logo.png";
 import Card from "./mini-components/Card.js";
-import { Navigate } from "../Navigate/Navigate.js";
+import { NavigateFunc } from "../Navigate/Navigate.js";
 
-const LandingPage = () => {
+const LandingPage = (props) => {
+  const navigate = NavigateFunc.bind(props);
   return (
     <>
       <div className="body">
@@ -22,7 +23,7 @@ const LandingPage = () => {
           <h1>Organize it all</h1>
           <h1>with Todoist</h1>
         </div>
-        <button onClick={() => Navigate("/home")} className="btn-start">
+        <button onClick={() => navigate("/home")} className="btn-start">
           <h2>Get Started</h2>
         </button>
 

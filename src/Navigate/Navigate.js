@@ -1,8 +1,26 @@
-import { createBrowserHistory } from "history";
+export function NavigateFunc(pathname, data = {}) { console.log("pathname", pathname)
+  let fromState = this?.location?.pathname || "";
+  let toState = pathname;
 
-export const Navigate = (path) => {
-  let history = createBrowserHistory();
-  history.push(path);
-  let pathUrl = window.location.href;
-  window.location.href = pathUrl;
-};
+  data.state = {
+    ...data?.state,
+    fromState,
+    toState,
+  };
+
+  if (data.edit) {
+    this.history.replace({
+      pathname: pathname,
+      search: data.searchParams || "",
+      params: data.params || {},
+      state: data.state || {},
+    });
+  } else {
+    this.history.push({
+      pathname: pathname,
+      search: data.searchParams  || "",
+      params: data.params || {},
+      state: data.state || {},
+    });
+  }
+}

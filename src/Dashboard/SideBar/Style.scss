@@ -1,13 +1,24 @@
 .sidebar{
-    width: 15%;
+    min-width: 180px;
+    max-width: 200px;
     background-color:#fafafa;
     height: 100vh;
 
+    div{
+        margin-left: 30px;
+        margin-bottom: 5px;
+        padding: 5px 10px;
+        border-radius: 7px;
+        cursor: pointer;
+    }
+
+    div:hover{
+        background-color:#E8E8E8;
+    }
 
     span{
         position: absolute;
         margin: 4px 0 0 10px
     }
-
 
 }

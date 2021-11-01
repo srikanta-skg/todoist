@@ -1,23 +1,17 @@
-import React, { useState } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import { grey } from "@mui/material/colors";
-import "./Style.scss";
-
 import MenuIcon from "@mui/icons-material/Menu";
 import HomeIcon from "@mui/icons-material/Home";
+import { NavigateFunc } from "../../Navigate/Navigate.js";
+import "./Style.scss";
 
-// import { FaPizzaSlice } from "react-icons/fa";
-
-export const Header = ({ showSideBar, setShowSideBar }) => {
-  const [shouldShowMain, setShouldShowMain] = useState(false);
-
-  //   const [showSideBar, setShowSideBar] = useState(false);
-
-  const [showQuickAddTask, setShowQuickAddTask] = useState(false);
-
+export const Header = ({ props, showSideBar, setShowSideBar }) => {
+  const navigate = NavigateFunc.bind(props);
   return (
     <div className="header">
       <div
+        style={{ margin: "0px 10px 0px 40px", cursor: "pointer" }}
         onClick={() => {
           setShowSideBar(!showSideBar);
         }}
@@ -25,7 +19,7 @@ export const Header = ({ showSideBar, setShowSideBar }) => {
         <MenuIcon sx={{ color: grey[50] }} />
       </div>
 
-      <div>
+      <div style={{ cursor: "pointer" }} onClick={() => navigate("/")}>
         <HomeIcon sx={{ color: grey[50] }} />
       </div>
     </div>
