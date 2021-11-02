@@ -11,12 +11,12 @@ export const SideBar = ({ navigate }) => {
     <div className="sidebar">
       <div
         style={{ marginTop: "30px" }}
-        onClick={() => navigate("/home/inbox")}
+        onClick={() => navigate("/home/Inbox")}
       >
         <InboxIcon sx={{ color: blue[300] }} />
         <span>Inbox</span>
       </div>
-      <div onClick={() => navigate("/home/today")}>
+      <div onClick={() => navigate("/home/Today")}>
         <TodayIcon sx={{ color: lightGreen[500] }} />
         <span>Today</span>
       </div>

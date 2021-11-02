@@ -1,0 +1,30 @@
+.addtask-header{
+    margin: 4px 0 0 5px;
+    position: absolute;
+    cursor: pointer;
+    font-weight: 400;
+    color: gray;
+
+}
+
+.addtask-header:hover{
+    color: red;
+}
+
+.addtask-icon:hover{
+    background-color: whitesmoke;
+    border-radius: 7px;
+}
+
+.checkcircle-outlineicon{
+    width: 100vh;
+    padding: 5px 0 0 10px;
+    display: flex;
+    flex-direction: row;
+    cursor: pointer;
+}
+
+.checkcircle-outlineicon:hover{
+    background-color: whitesmoke;
+    border-radius: 7px;
+}
