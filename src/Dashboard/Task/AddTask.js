@@ -6,7 +6,6 @@ import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Radio from "@mui/material/Radio";
-
 import "./Style.scss";
 
 export const AddTask = (props, { event }) => {
@@ -14,11 +13,9 @@ export const AddTask = (props, { event }) => {
   const [addTaskIcon, setAddTaskIcon] = useState(false);
   const [value, setValue] = useState("");
   const [valueDec, setValueDec] = useState("");
-  const [checked, setChecked] = useState("");
 
   const {
     match: { url },
-    // location,
   } = props;
   const pathName = url.split("/")[2];
 
@@ -38,6 +35,7 @@ export const AddTask = (props, { event }) => {
     todoList.push({
       title: value,
       details: valueDec,
+      index: todoList.length + 1,
     });
     setTodoList(todoList);
     setValue("");
@@ -45,9 +43,15 @@ export const AddTask = (props, { event }) => {
   };
 
   const taskComplete = (idx) => {
-    // setChecked(idx);
     todoList.splice(idx, 1);
+    todoList.map((item, idx) => {
+      return {
+        ...item,
+        index: idx,
+      };
+    });
     setTodoList(todoList);
+    setAddTaskIcon(!addTaskIcon);
   };
 
   return (
@@ -63,7 +67,7 @@ export const AddTask = (props, { event }) => {
             return (
               <div className="checkcircle-outlineicon">
                 <Radio
-                //   checked={idx === checked}
+                  checked={false}
                   onClick={() => taskComplete(idx)}
                   value="a"
                   name="radio-buttons"
