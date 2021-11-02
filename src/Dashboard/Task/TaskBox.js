@@ -2,6 +2,7 @@ import React from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
+import './Style.scss';
 
 export const Taskbox = ({
     disabled,
@@ -13,16 +14,7 @@ export const Taskbox = ({
     valueDec,
   }) => {
     return (
-      <div
-        style={{
-          border: "1px solid gray",
-          display: "flex",
-          flexDirection: "column",
-          width: "520px",
-          padding: "5px",
-          borderRadius: "8px",
-        }}
-      >
+      <div className='addtask-box'>
         <Box
           component="form"
           sx={{
@@ -33,8 +25,8 @@ export const Taskbox = ({
         >
           <TextField
             id="standard-textarea"
-            label="Multiline Placeholder"
-            placeholder="Placeholder"
+            // label="Multiline Placeholder"
+            placeholder="eg,. Get pastries Sun at 9 #Family"
             onChange={handleChange}
             multiline
             value={value}
@@ -47,7 +39,7 @@ export const Taskbox = ({
               multiline
               rows={4}
               value={valueDec}
-              placeholder="eg,. Get pastries Sun at 9 #Family"
+              placeholder="Description"
               onChange={handleChangeDec}
               variant="standard"
             />

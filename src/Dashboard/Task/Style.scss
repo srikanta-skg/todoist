@@ -28,3 +28,19 @@
     background-color: whitesmoke;
     border-radius: 7px;
 }
+
+
+.addtask-box{
+    border: 1px solid gray;
+    display: flex;
+    flex-direction: column;
+    width: 520px;
+    padding: 5px;
+    border-radius: 8px;
+
+
+    .css-5xn5lu-MuiInputBase-root-MuiInput-root:before {
+        border-bottom: none !important;
+    }
+
+}
