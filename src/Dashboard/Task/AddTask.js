@@ -2,22 +2,31 @@ import React, { useState } from "react";
 import { Time } from "./function";
 import AddIcon from "@mui/icons-material/Add";
 import { red } from "@mui/material/colors";
-import Box from "@mui/material/Box";
-import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
 import Radio from "@mui/material/Radio";
+import WVBottomSheet from "./WVBottomSheet";
+import { Taskbox } from "./TaskBox";
 import "./Style.scss";
+import { Subtitles } from "@material-ui/icons";
 
 export const AddTask = (props, { event }) => {
   const [todoList, setTodoList] = useState([]);
-  const [addTaskIcon, setAddTaskIcon] = useState(false);
+  const [addTaskBlock, setAddTaskBlock] = useState(false);
   const [value, setValue] = useState("");
   const [valueDec, setValueDec] = useState("");
+  const [openDialog, setOpenDialog] = useState(false);
+  const [bottomsheet, setBottomSheet] = useState([]);
+  const [isBottom, setIsBottom] = useState(false);
 
   const {
     match: { url },
   } = props;
   const pathName = url.split("/")[2];
+
+  const onClose = (idx) => {
+    const arr = [...todoList];
+    setBottomSheet(arr.splice(idx, 1));
+    return setOpenDialog(!openDialog);
+  };
 
   const handleChange = (event) => {
     return setValue(event.target.value);
@@ -27,8 +36,9 @@ export const AddTask = (props, { event }) => {
     return setValueDec(event.target.value);
   };
 
-  const onCancle = () => {
-    return setAddTaskIcon(true);
+  const onCancle = (idx) => {
+    setIsBottom(false);
+    return setAddTaskBlock(!addTaskBlock);
   };
 
   const onSubmit = () => {
@@ -43,15 +53,16 @@ export const AddTask = (props, { event }) => {
   };
 
   const taskComplete = (idx) => {
-    todoList.splice(idx, 1);
+    todoList.splice(idx - 1, 1);
     todoList.map((item, idx) => {
+      item.index = idx + 1;
       return {
         ...item,
-        index: idx,
       };
     });
     setTodoList(todoList);
-    setAddTaskIcon(!addTaskIcon);
+    setIsBottom(true);
+    setAddTaskBlock(!addTaskBlock);
   };
 
   return (
@@ -62,36 +73,23 @@ export const AddTask = (props, { event }) => {
           <span style={{ fontSize: "12px", color: "gray" }}> {Time()}</span>
         </h3>
 
-        {todoList &&
-          todoList.map((item, idx) => {
-            return (
-              <div className="checkcircle-outlineicon">
-                <Radio
-                  checked={false}
-                  onClick={() => taskComplete(idx)}
-                  value="a"
-                  name="radio-buttons"
-                  inputProps={{ "aria-label": "A" }}
-                />
-                <span style={{ margin: "-20px 0 10px 10px" }}>
-                  <h3>{item.title}</h3>
-                  {item.details && (
-                    <p style={{ margin: "-15px 0 5px 0" }}>{item.details}</p>
-                  )}
-                </span>
-              </div>
-            );
-          })}
+        {todoList && (
+          <TodoListBlock
+            todoList={todoList}
+            taskComplete={taskComplete}
+            onClose={onClose}
+          />
+        )}
 
-        {addTaskIcon && (
-          <div className="addtask-icon" onClick={() => setAddTaskIcon(false)}>
+        {addTaskBlock && (
+          <div className="addtask-icon" onClick={() => setAddTaskBlock(false)}>
             <AddIcon sx={{ color: red[500] }} />{" "}
             <span className="addtask-header"> Add Task</span>
           </div>
         )}
 
-        {!addTaskIcon && (
-          <Task
+        {!addTaskBlock && (
+          <Taskbox
             handleChange={handleChange}
             handleChangeDec={handleChangeDec}
             onCancle={onCancle}
@@ -101,74 +99,51 @@ export const AddTask = (props, { event }) => {
             disabled={value.length > 0 ? false : true}
           />
         )}
+        {openDialog && (
+          <WVBottomSheet
+            isOpen={openDialog}
+            onClose={onClose}
+            children={<Taskbox />}
+            subtitle=''
+            title={
+              <TodoListBlock
+                todoList={bottomsheet}
+                taskComplete={taskComplete}
+                onClose={onClose}
+                isBottom={isBottom}
+              />
+            }
+          />
+        )}
       </div>
     </>
   );
 };
 
-const Task = ({
-  disabled,
-  handleChange,
-  handleChangeDec,
-  onCancle,
-  onSubmit,
-  value,
-  valueDec,
-}) => {
-  return (
-    <div
-      style={{
-        border: "1px solid gray",
-        display: "flex",
-        flexDirection: "column",
-        width: "520px",
-        padding: "5px",
-        borderRadius: "8px",
-      }}
-    >
-      <Box
-        component="form"
-        sx={{
-          "& .MuiTextField-root": { m: 1, width: "500px" },
-        }}
-        noValidate
-        autoComplete="off"
-      >
-        <TextField
-          id="standard-textarea"
-          label="Multiline Placeholder"
-          placeholder="Placeholder"
-          onChange={handleChange}
-          multiline
-          value={value}
-          variant="standard"
+const TodoListBlock = (
+  { todoList, taskComplete, onClose, isBottom } // implisit return function
+) =>
+  todoList.map((item, idx) => {
+    return (
+      <div className="checkcircle-outlineicon">
+        <Radio
+          checked={false}
+          onClick={() => taskComplete(item.index)}
+          value="a"
+          name="radio-buttons"
+          inputProps={{ "aria-label": "A" }}
         />
-        <div>
-          <TextField
-            id="standard-multiline-static"
-            label=""
-            multiline
-            rows={4}
-            value={valueDec}
-            placeholder="eg,. Get pastries Sun at 9 #Family"
-            onChange={handleChangeDec}
-            variant="standard"
-          />
-        </div>
-      </Box>
-      <div>
-        <Button
-          onClick={onSubmit}
-          disabled={disabled}
-          variant="contained"
-          color="error"
+        <span
+          style={{ margin: "-20px 0 10px 10px", width: "100%" }}
+          onClick={() => onClose(idx)}
         >
-          Add Task
-        </Button>{" "}
-        <Button onClick={onCancle} variant="outlined">
-          Cancle
-        </Button>
+          <h3 style={{ textDecoration: isBottom ? "line-through" : "" }}>
+            {item.title}
+          </h3>
+          {item.details && (
+            <p style={{ margin: "-15px 0 5px 0" }}>{item.details}</p>
+          )}
+        </span>
       </div>
-    </div>
-  );
-};
+    );
+  });
