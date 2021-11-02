@@ -5,8 +5,23 @@ import { red } from "@mui/material/colors";
 import Radio from "@mui/material/Radio";
 import WVBottomSheet from "./WVBottomSheet";
 import { Taskbox } from "./TaskBox";
+import Typography from "@material-ui/core/Typography";
+import PropTypes from "prop-types";
 import "./Style.scss";
-import { Subtitles } from "@material-ui/icons";
+import SwipeableViews from "react-swipeable-views";
+
+function TabContainer({ children, dir }) {
+  return (
+    <Typography component="div" dir={dir}>
+      {children}
+    </Typography>
+  );
+}
+
+TabContainer.propTypes = {
+  children: PropTypes.node.isRequired,
+  dir: PropTypes.string.isRequired,
+};
 
 export const AddTask = (props, { event }) => {
   const [todoList, setTodoList] = useState([]);
@@ -104,7 +119,20 @@ export const AddTask = (props, { event }) => {
             isOpen={openDialog}
             onClose={onClose}
             children={<Taskbox />}
-            subtitle=''
+            subtitle={
+              <SwipeableViews
+                // ref={this.swipeableViewsRef}
+                index={0}
+                className="tab-wrapper"
+                id="tab-wrapper"
+                animateHeight
+                enableMouseEvents
+              >
+                <TabContainer dir={"ltr"}></TabContainer>
+                <TabContainer dir={"ltr"}></TabContainer>
+                <TabContainer dir={"ltr"}></TabContainer>
+              </SwipeableViews>
+            }
             title={
               <TodoListBlock
                 todoList={bottomsheet}
