@@ -92,7 +92,7 @@ export const AddTask = (props, { event }) => {
             onClose={onClose}
           />
         )}
-
+        {/* This is the Plus Button  AddTaskBlock*/}
         {addTaskBlock && <AddTaskBlock setAddTaskBlock={setAddTaskBlock} />}
 
         {!addTaskBlock && (

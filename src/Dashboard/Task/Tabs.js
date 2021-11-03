@@ -1,11 +1,16 @@
 import React from "react";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
-import MenuItem from "@material-ui/core/MenuItem";
-import Select from "@material-ui/core/Select";
+// import MenuItem from "@material-ui/core/MenuItem";
+// import Select from "@material-ui/core/Select";
 import SwipeableViews from "react-swipeable-views";
 import { Taskbox } from "../Task/TaskBox.js";
-import { AddTaskBlock, TaskBar } from "./mini-components/minicomponents.js";
+import {
+  AddTaskBlock,
+  TaskBar,
+  CommentBox,
+  CommentTextRender,
+} from "./mini-components/minicomponents.js";
 import { storageService } from "../Utility/function";
 import isEmpty from "lodash/isEmpty";
 import "./Style.scss";
@@ -16,7 +21,6 @@ const styles = {
   },
   slide: {
     padding: 15,
-    minHeight: 100,
     color: "#fff",
   },
   slide1: {
@@ -45,6 +49,12 @@ class SwipingTabs extends React.Component {
     });
   };
 
+  onCommentChange = (event) => {
+    this.setState({
+      comment: event.target?.value,
+    });
+  };
+
   handleChangeIndex = (index) => {
     this.setState({
       index,
@@ -67,33 +77,41 @@ class SwipingTabs extends React.Component {
     this.props.setAddTaskBlock();
   };
 
-  onSubmit = () => {
+  onSubmit = (isCommentSubmit) => {
     const todoList = storageService().getObject("todoList");
-    todoList.map((item) => {
+    let array = todoList.map((item) => {
       if (
         item.index === this.props.taskbar[0]?.index &&
         item.title === this.props.taskbar[0]?.title
       ) {
-        const subtask = {
-          title: this.state.value,
-          details: this.state.valueDec,
-          index: item?.subtask?.length + 1,
-          createdTime: "", // Time(),
-          complitionTime: "",
-        };
-        item?.subtask.push(subtask);
-        return item;
+        if (isCommentSubmit) {
+          let obj = {
+            ...item,
+            comment: this.state.comment,
+          };
+          return obj;
+        } else {
+          const subtask = {
+            title: this.state.value,
+            details: this.state.valueDec,
+            index: item?.subtask?.length + 1,
+            createdTime: "", // Time(),
+            complitionTime: "",
+          };
+          item?.subtask.push(subtask);
+          return item;
+        }
       }
       return item;
     });
-    this.props.setTodoList(todoList);
-    storageService().setObject("todoList", todoList);
-    this.setState({ value: "", valueDec: "" });
+    this.props.setTodoList(array);
+    storageService().setObject("todoList", array);
+    this.setState({ value: "", valueDec: "", comment: "" });
   };
 
   taskComplete = (idx) => {
     const todoList = storageService().getObject("todoList");
-    todoList.map((item) => {
+    let array = todoList.map((item) => {
       var found = item?.subtask?.find(function (element) {
         return element?.index == idx;
       });
@@ -107,8 +125,8 @@ class SwipingTabs extends React.Component {
         });
       }
     });
-    this.props.setTodoList(todoList);
-    storageService().setObject("todoList", todoList);
+    this.props.setTodoList(array);
+    storageService().setObject("todoList", array);
   };
 
   render() {
@@ -156,7 +174,14 @@ class SwipingTabs extends React.Component {
             )}
           </div>
           <div style={Object.assign({}, styles.slide, styles.slide2)}>
-            comments
+            {!isEmpty(this.props?.taskbar) && (
+              <CommentTextRender taskbar={this.props.taskbar} />
+            )}
+            <CommentBox
+              onSubmit={() => this.onSubmit(true)}
+              onCommentChange={this.onCommentChange}
+              comment={this.state.comment}
+            />
           </div>
           <div style={Object.assign({}, styles.slide, styles.slide3)}>
             Activity

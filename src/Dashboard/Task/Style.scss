@@ -54,3 +54,38 @@
 .checkcircle-outlineicon{
     min-width: 200px
 }
+
+.react-swipeable-view-container{
+    min-height: 500px;
+}
+
+
+.comment-box{
+    position: absolute;
+    bottom: 10px;
+
+    .MuiFormControl-root{
+        width: 100%;
+    }
+
+    .css-1kty9di-MuiFormLabel-root-MuiInputLabel-root.Mui-focused  {
+        border: none !important;
+        color: black !important;
+    }
+
+    .btn-comment{
+        position: absolute;
+        bottom: 10px;
+        right: 10px;
+    }
+}
+
+.btn-submit{
+    .css-1sszw6i-MuiButtonBase-root-MuiButton-root{
+        color: white !important;
+        background-color: #d32f2f !important;
+        height: 38px;
+        padding: 10px;
+        border-radius: 8px;
+    }
+}
