@@ -7,6 +7,7 @@ import SwipeableViews from "react-swipeable-views";
 import { Taskbox } from "../Task/TaskBox.js";
 import { AddTaskBlock, TaskBar } from "./mini-components/minicomponents.js";
 import { storageService } from "../Utility/function";
+import isEmpty from "lodash/isEmpty";
 import "./Style.scss";
 
 const styles = {
@@ -87,7 +88,27 @@ class SwipingTabs extends React.Component {
     });
     this.props.setTodoList(todoList);
     storageService().setObject("todoList", todoList);
-    this.setState({value: '', valueDec: ''});
+    this.setState({ value: "", valueDec: "" });
+  };
+
+  taskComplete = (idx) => {
+    const todoList = storageService().getObject("todoList");
+    todoList.map((item) => {
+      var found = item?.subtask?.find(function (element) {
+        return element?.index == idx;
+      });
+      if (found) {
+        item?.subtask?.splice(idx - 1, 1);
+        item?.subtask?.map((item, idx) => {
+          item.index = idx + 1;
+          return {
+            ...item,
+          };
+        });
+      }
+    });
+    this.props.setTodoList(todoList);
+    storageService().setObject("todoList", todoList);
   };
 
   render() {
@@ -113,6 +134,13 @@ class SwipingTabs extends React.Component {
           <div style={Object.assign({}, styles.slide, styles.slide1)}>
             {!this.props.addTaskBlock && (
               <AddTaskBlock setAddTaskBlock={this.onCancle} />
+            )}
+            {!isEmpty(this.props?.taskbar) && (
+              <TaskBar
+                todoList={this.props.taskbar[0]?.subtask || []}
+                taskComplete={this.taskComplete}
+                onClose={this.onCancle}
+              />
             )}
 
             {this.props.addTaskBlock && (

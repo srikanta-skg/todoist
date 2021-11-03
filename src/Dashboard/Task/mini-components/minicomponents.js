@@ -14,7 +14,7 @@ export const AddTaskBlock = ({setAddTaskBlock}) => (
 export const TaskBar = (
     { todoList, taskComplete, onClose, isBottom } // implisit return function
   ) =>
-    todoList.map((item, idx) => {
+    todoList?.map((item, idx) => {
       return (
         <div className="checkcircle-outlineicon">
           <Radio
