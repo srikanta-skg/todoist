@@ -1,4 +1,4 @@
-export function NavigateFunc(pathname, data = {}) { console.log("pathname", pathname)
+export function NavigateFunc(pathname, data = {}) {
   let fromState = this?.location?.pathname || "";
   let toState = pathname;
 

@@ -4,6 +4,9 @@ import Tab from "@material-ui/core/Tab";
 import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
 import SwipeableViews from "react-swipeable-views";
+import { Taskbox } from "../Task/TaskBox.js";
+import { AddTaskBlock, TaskBar } from "./mini-components/minicomponents.js";
+import { storageService } from "../Utility/function";
 import "./Style.scss";
 
 const styles = {
@@ -16,21 +19,22 @@ const styles = {
     color: "#fff",
   },
   slide1: {
-    // backgroundColor: "#FEA900",
+    color: "black",
   },
   slide2: {
-    // backgroundColor: "#B3DC4A",
+    color: "black",
   },
   slide3: {
-    // backgroundColor: "#6AC0FF",
+    color: "black",
   },
 };
 
-class DemoTabs extends React.Component {
+class SwipingTabs extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       index: 0,
+      value: "",
     };
   }
 
@@ -46,9 +50,48 @@ class DemoTabs extends React.Component {
     });
   };
 
-  render() {
-    const { index } = this.state;
+  handleChangeTaskBox = (event) => {
+    this.setState({
+      value: event.target.value,
+    });
+  };
 
+  handleChangeDec = (event) => {
+    this.setState({
+      valueDec: event.target.value,
+    });
+  };
+
+  onCancle = () => {
+    this.props.setAddTaskBlock();
+  };
+
+  onSubmit = () => {
+    const todoList = storageService().getObject("todoList");
+    todoList.map((item) => {
+      if (
+        item.index === this.props.taskbar[0]?.index &&
+        item.title === this.props.taskbar[0]?.title
+      ) {
+        const subtask = {
+          title: this.state.value,
+          details: this.state.valueDec,
+          index: item?.subtask?.length + 1,
+          createdTime: "", // Time(),
+          complitionTime: "",
+        };
+        item?.subtask.push(subtask);
+        return item;
+      }
+      return item;
+    });
+    this.props.setTodoList(todoList);
+    storageService().setObject("todoList", todoList);
+    this.setState({value: '', valueDec: ''});
+  };
+
+  render() {
+    const { index, value, valueDec } = this.state;
     return (
       <div>
         <Tabs
@@ -68,16 +111,24 @@ class DemoTabs extends React.Component {
           enableMouseEvents
         >
           <div style={Object.assign({}, styles.slide, styles.slide1)}>
-            sub-tasks
+            {!this.props.addTaskBlock && (
+              <AddTaskBlock setAddTaskBlock={this.onCancle} />
+            )}
+
+            {this.props.addTaskBlock && (
+              <Taskbox
+                handleChange={this.handleChangeTaskBox}
+                handleChangeDec={this.handleChangeDec}
+                onCancle={this.onCancle}
+                onSubmit={this.onSubmit}
+                value={value}
+                valueDec={valueDec}
+                disabled={value?.length > 0 ? false : true}
+              />
+            )}
           </div>
           <div style={Object.assign({}, styles.slide, styles.slide2)}>
             comments
-            {/* <Select value={10} autoWidth={false}>
-              <MenuItem value="">
-                <em>None</em>
-              </MenuItem>
-              <MenuItem value={10}>Ten</MenuItem>
-            </Select> */}
           </div>
           <div style={Object.assign({}, styles.slide, styles.slide3)}>
             Activity
@@ -87,5 +138,9 @@ class DemoTabs extends React.Component {
     );
   }
 }
+
+const DemoTabs = (props) => {
+  return <SwipingTabs {...props} />;
+};
 
 export default DemoTabs;

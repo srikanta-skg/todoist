@@ -1,27 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Time } from "./function";
-import AddIcon from "@mui/icons-material/Add";
-import { red } from "@mui/material/colors";
-import Radio from "@mui/material/Radio";
 import WVBottomSheet from "./WVBottomSheet";
 import { Taskbox } from "./TaskBox";
-import Typography from "@material-ui/core/Typography";
-import PropTypes from "prop-types";
 import "./Style.scss";
-import  DemoTabs from './Tabs'
-
-function TabContainer({ children, dir }) {
-  return (
-    <Typography component="div" dir={dir}>
-      {children}
-    </Typography>
-  );
-}
-
-TabContainer.propTypes = {
-  children: PropTypes.node.isRequired,
-  dir: PropTypes.string.isRequired,
-};
+import DemoTabs from "./Tabs";
+import { storageService } from "../Utility/function";
+import { AddTaskBlock, TaskBar } from "./mini-components/minicomponents.js";
 
 export const AddTask = (props, { event }) => {
   const [todoList, setTodoList] = useState([]);
@@ -31,6 +15,14 @@ export const AddTask = (props, { event }) => {
   const [openDialog, setOpenDialog] = useState(false);
   const [bottomsheet, setBottomSheet] = useState([]);
   const [isBottom, setIsBottom] = useState(false);
+
+  useEffect(() => {
+    if (openDialog) {
+      let [obj] = bottomsheet;
+      let arr = [...todoList].splice(obj?.index - 1, 1);
+      setBottomSheet(arr);
+    }
+  }, [todoList]);
 
   const {
     match: { url },
@@ -61,10 +53,14 @@ export const AddTask = (props, { event }) => {
       title: value,
       details: valueDec,
       index: todoList.length + 1,
+      createdTime: Time(),
+      complitionTime: "",
+      subtask: [],
     });
     setTodoList(todoList);
     setValue("");
     setValueDec("");
+    storageService().setObject("todoList", todoList);
   };
 
   const taskComplete = (idx) => {
@@ -78,6 +74,7 @@ export const AddTask = (props, { event }) => {
     setTodoList(todoList);
     setIsBottom(true);
     setAddTaskBlock(!addTaskBlock);
+    storageService().setObject("todoList", todoList);
   };
 
   return (
@@ -89,19 +86,14 @@ export const AddTask = (props, { event }) => {
         </h3>
 
         {todoList && (
-          <TodoListBlock
+          <TaskBar
             todoList={todoList}
             taskComplete={taskComplete}
             onClose={onClose}
           />
         )}
 
-        {addTaskBlock && (
-          <div className="addtask-icon" onClick={() => setAddTaskBlock(false)}>
-            <AddIcon sx={{ color: red[500] }} />{" "}
-            <span className="addtask-header"> Add Task</span>
-          </div>
-        )}
+        {addTaskBlock && <AddTaskBlock setAddTaskBlock={setAddTaskBlock} />}
 
         {!addTaskBlock && (
           <Taskbox
@@ -118,28 +110,22 @@ export const AddTask = (props, { event }) => {
           <WVBottomSheet
             isOpen={openDialog}
             onClose={onClose}
-            children={<Taskbox />}
-            subtitle={
-              <DemoTabs />
-              // <SwipeableViews
-              //   // ref={this.swipeableViewsRef}
-              //   index={0}
-              //   className="tab-wrapper"
-              //   id="tab-wrapper"
-                // animateHeight
-                // enableMouseEvents
-              // >
-              //   <TabContainer dir={"ltr"}></TabContainer>
-              //   <TabContainer dir={"ltr"}></TabContainer>
-              //   <TabContainer dir={"ltr"}></TabContainer>
-              // </SwipeableViews>
-            }
             title={
-              <TodoListBlock
+              <TaskBar
                 todoList={bottomsheet}
                 taskComplete={taskComplete}
                 onClose={onClose}
                 isBottom={isBottom}
+                setTodoList={setTodoList}
+              />
+            }
+            subtitle={"Description goes here bro"}
+            children={
+              <DemoTabs
+                setAddTaskBlock={() => setAddTaskBlock(!addTaskBlock)}
+                addTaskBlock={addTaskBlock}
+                taskbar={bottomsheet}
+                setTodoList={setTodoList}
               />
             }
           />
@@ -148,31 +134,3 @@ export const AddTask = (props, { event }) => {
     </>
   );
 };
-
-const TodoListBlock = (
-  { todoList, taskComplete, onClose, isBottom } // implisit return function
-) =>
-  todoList.map((item, idx) => {
-    return (
-      <div className="checkcircle-outlineicon">
-        <Radio
-          checked={false}
-          onClick={() => taskComplete(item.index)}
-          value="a"
-          name="radio-buttons"
-          inputProps={{ "aria-label": "A" }}
-        />
-        <span
-          style={{ margin: "-20px 0 10px 10px", width: "100%" }}
-          onClick={() => onClose(idx)}
-        >
-          <h3 style={{ textDecoration: isBottom ? "line-through" : "" }}>
-            {item.title}
-          </h3>
-          {item.details && (
-            <p style={{ margin: "-15px 0 5px 0" }}>{item.details}</p>
-          )}
-        </span>
-      </div>
-    );
-  });
