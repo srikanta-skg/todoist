@@ -8,7 +8,7 @@ import { Taskbox } from "./TaskBox";
 import Typography from "@material-ui/core/Typography";
 import PropTypes from "prop-types";
 import "./Style.scss";
-import SwipeableViews from "react-swipeable-views";
+import  DemoTabs from './Tabs'
 
 function TabContainer({ children, dir }) {
   return (
@@ -120,18 +120,19 @@ export const AddTask = (props, { event }) => {
             onClose={onClose}
             children={<Taskbox />}
             subtitle={
-              <SwipeableViews
-                // ref={this.swipeableViewsRef}
-                index={0}
-                className="tab-wrapper"
-                id="tab-wrapper"
-                animateHeight
-                enableMouseEvents
-              >
-                <TabContainer dir={"ltr"}></TabContainer>
-                <TabContainer dir={"ltr"}></TabContainer>
-                <TabContainer dir={"ltr"}></TabContainer>
-              </SwipeableViews>
+              <DemoTabs />
+              // <SwipeableViews
+              //   // ref={this.swipeableViewsRef}
+              //   index={0}
+              //   className="tab-wrapper"
+              //   id="tab-wrapper"
+                // animateHeight
+                // enableMouseEvents
+              // >
+              //   <TabContainer dir={"ltr"}></TabContainer>
+              //   <TabContainer dir={"ltr"}></TabContainer>
+              //   <TabContainer dir={"ltr"}></TabContainer>
+              // </SwipeableViews>
             }
             title={
               <TodoListBlock

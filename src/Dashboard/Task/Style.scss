@@ -17,7 +17,6 @@
 }
 
 .checkcircle-outlineicon{
-    width: 100vh;
     padding: 5px 0 0 10px;
     display: flex;
     flex-direction: row;
@@ -43,4 +42,11 @@
         border-bottom: none !important;
     }
 
+}
+.MuiTabs-indicator{
+    width: 230px !important;
+}
+
+.MuiTabs-flexContainer{
+    border-bottom: 1px solid gray;
 }

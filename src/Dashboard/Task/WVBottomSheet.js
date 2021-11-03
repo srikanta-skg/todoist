@@ -1,34 +1,3 @@
-/*
-
-Use: Info Bubble to show informational/error/success/warning content with ability to dismiss
-
-Example syntax:
-  <WVBottomSheet
-    isOpen={true} ***required***
-    onClose={() => {...}}
-    buttonLayout="stacked",
-    button1Props={{
-      type: 'primary' ***required***
-      title: 'Button 1', ***required***
-      onClick: () => {...}
-      classes: {}
-    }},
-    button2Props = {... (same as button1Props)},
-    title="Bottomsheet title",
-    subtitle="Bottomsheet subtitle"
-    image={require('assets/path/to/asset')}
-    classes={}
-  >
-    Place anything here that needs to be added within
-    the content box of bottomsheet but not as subtitle
-  </WVBottomSheet>
-
-*/
-
-
-
-
-
 import React from 'react';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
