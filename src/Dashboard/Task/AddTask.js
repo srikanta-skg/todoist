@@ -6,6 +6,7 @@ import "./Style.scss";
 import DemoTabs from "./Tabs";
 import { storageService } from "../Utility/function";
 import { AddTaskBlock, TaskBar } from "./mini-components/minicomponents.js";
+import isEmpty from "lodash/isEmpty";
 
 export const AddTask = (props, { event }) => {
   const [todoList, setTodoList] = useState([]);
@@ -63,10 +64,11 @@ export const AddTask = (props, { event }) => {
     storageService().setObject("todoList", todoList);
   };
 
-  const taskComplete = (idx) => {
-    todoList.splice(idx - 1, 1);
+  const taskComplete = (idx, taskDates) => {
+    if (isEmpty(taskDates)) todoList.splice(idx - 1, 1);
     todoList.map((item, idx) => {
       item.index = idx + 1;
+      if (taskDates) item.complitionTime = Time(taskDates.end);
       return {
         ...item,
       };
@@ -86,11 +88,11 @@ export const AddTask = (props, { event }) => {
         </h3>
         {/* This is the List of Task shown in the body*/}
         {todoList && (
-          <TaskBar 
+          <TaskBar
             todoList={todoList}
             taskComplete={taskComplete}
             onClose={onClose}
-          /> 
+          />
         )}
         {/* This is the Plus Button  AddTaskBlock*/}
         {addTaskBlock && <AddTaskBlock setAddTaskBlock={setAddTaskBlock} />}

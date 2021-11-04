@@ -21,4 +21,36 @@
         margin: 4px 0 0 10px
     }
 
+    .sidebar-project:hover{
+        .hide{
+            display: block;
+            font-size: 28px;
+            margin: -5px 0 0 10px;
+            color: #808080;
+        }
+    }
+
+    .sidebar-project{
+        display: flex;
+        margin:  15% 0 0 25px;
+
+        .hide{
+            display: none;
+        }
+        
+    }
+    h4{
+        margin-top: 5px;
+        margin-left: 10px;
+    }
 }
+
+    .create-project-title{  // Fix this Z-index Issue
+        border-bottom: 1px solid #DCDCDC;
+        display: flex;
+        justify-content: space-between;
+
+        .MuiDialog-root .wv-bottomsheet{
+            z-index: 0 !important;
+        }
+    }

@@ -1,8 +1,6 @@
 import React from "react";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
-// import MenuItem from "@material-ui/core/MenuItem";
-// import Select from "@material-ui/core/Select";
 import SwipeableViews from "react-swipeable-views";
 import { Taskbox } from "../Task/TaskBox.js";
 import {
@@ -134,6 +132,8 @@ class SwipingTabs extends React.Component {
     storageService().setObject("todoList", todoList);
   };
 
+  addComment = (item) => console.log(item)
+
   render() {
     const { index, value, valueDec } = this.state;
     return (
@@ -158,11 +158,14 @@ class SwipingTabs extends React.Component {
             {!this.props.addTaskBlock && (
               <AddTaskBlock setAddTaskBlock={this.onCancle} />
             )}
+            {/* subtask add's here */}
             {!isEmpty(this.props.taskbar) && (
               <TaskBar
                 todoList={this.props.taskbar[0]?.subtask || []}
                 taskComplete={this.taskComplete}
                 onClose={this.onCancle}
+                addComment={this.addComment}
+                subtask={true}
               />
             )}
 

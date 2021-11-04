@@ -8,7 +8,7 @@ import { AddTask } from "./Task/AddTask";
 // Using Implicit function with out return keyword.
 export const Dashboard = (
   props,
-  { darkModeDefault = false, showSideBarDefault = true }
+  { showSideBarDefault = true }
 ) => {
   const [showSideBar, setShowSideBar] = useState(showSideBarDefault);
   const [sideBarPath, setSideBarPath] = useState("");
@@ -42,9 +42,7 @@ export const Dashboard = (
 
 const PageNotFound = () => {
   return (
-    <div style={{ textAlign: "center", width: "100%" }}>
-      Page Not Found!
-    </div>
+    <div style={{ textAlign: "center", width: "100%" }}>Page Not Found!</div>
   );
 };
 

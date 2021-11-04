@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
 import { grey } from "@mui/material/colors";
 import MenuIcon from "@mui/icons-material/Menu";
 import HomeIcon from "@mui/icons-material/Home";
@@ -24,9 +23,4 @@ export const Header = ({ props, showSideBar, setShowSideBar }) => {
       </div>
     </div>
   );
-};
-
-Header.propTypes = {
-  darkMode: PropTypes.bool.isRequired,
-  setDarkMode: PropTypes.func.isRequired,
 };

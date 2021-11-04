@@ -23,7 +23,7 @@ const LandingPage = (props) => {
           <h1>Organize it all</h1>
           <h1>with Todoist</h1>
         </div>
-        <button onClick={() => navigate("/home")} className="btn-start">
+        <button onClick={() => navigate("/home/Today")} className="btn-start">
           <h2>Get Started</h2>
         </button>
 
