@@ -30,7 +30,7 @@ export const Dashboard = (
       <div style={{ display: "flex" }}>
         {showSideBar && <SideBar navigate={navigate} />}
         <Switch>
-          <Route path={`${url}`} exact component={PageNotFound} />
+          <Route path={`${url}`} exact component={AddTask} />
           <Route path={`${url}/Inbox`} component={AddTask} />
           <Route path={`${url}/Today`} component={AddTask} />
           <Route path={`${url}/Upcoming`} component={PageNotFound} />

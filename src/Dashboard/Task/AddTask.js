@@ -84,13 +84,13 @@ export const AddTask = (props, { event }) => {
           {pathName}{" "}
           <span style={{ fontSize: "12px", color: "gray" }}> {Time()}</span>
         </h3>
-
+        {/* This is the List of Task shown in the body*/}
         {todoList && (
-          <TaskBar
+          <TaskBar 
             todoList={todoList}
             taskComplete={taskComplete}
             onClose={onClose}
-          />
+          /> 
         )}
         {/* This is the Plus Button  AddTaskBlock*/}
         {addTaskBlock && <AddTaskBlock setAddTaskBlock={setAddTaskBlock} />}

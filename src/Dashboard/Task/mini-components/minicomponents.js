@@ -10,7 +10,6 @@ import Button from "@mui/material/Button";
 import CommentIcon from "@mui/icons-material/Comment";
 import { makeStyles } from "@material-ui/core/styles";
 import IconButton from "@material-ui/core/IconButton";
-import Delete from "@mui/icons-material/Delete";
 
 export const AddTaskBlock = ({ setAddTaskBlock }) => (
   <div className="addtask-icon" onClick={() => setAddTaskBlock(false)}>
@@ -43,15 +42,15 @@ export const TaskBar = (
             <p style={{ margin: "-15px 0 5px 0" }}>{item.details}</p>
           )}
         </span>
+        <br/>
       </div>
     );
   });
 
 export const CommentBox = ({
   onSubmit,
-  disabled,
   onCommentChange,
-  comment,
+  comment = '',
 }) => {
   return (
     <div className="comment-box">
@@ -75,10 +74,10 @@ export const CommentBox = ({
         />
       </Box>
       <div className="btn-comment">
-        <div className="btn-submit">
+        <div className={comment?.length === 0 ? 'button-css' : 'button-css btn-submit'}>
           <Button
             onClick={onSubmit}
-            disabled={disabled}
+            disabled={comment?.length === 0}
             variant="contained"
             color="error"
           >
@@ -131,15 +130,3 @@ const useStyles = makeStyles((theme) => ({
     },
   },
 }));
-
-// const useStyles = makeStyles((theme) => ({
-//   customHoverFocus: {
-//     "&:hover, &.Mui-focusVisible": {
-//       // backgroundColor: "#e0e0e0",
-//       color: "#212121",
-//     },
-//     "&.MuiButtonBase-root": {
-//       color: "#212121",
-//     },
-//   },
-// }));

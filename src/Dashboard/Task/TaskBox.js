@@ -45,7 +45,7 @@ export const Taskbox = ({
             />
           </div>
         </Box>
-        <div className='btn-submit'>
+        <div className={disabled ? 'button-css' : 'button-css btn-submit'}>
           <Button
             onClick={onSubmit}
             disabled={disabled}

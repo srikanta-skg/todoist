@@ -123,7 +123,7 @@ class SwipingTabs extends React.Component {
             ...item,
           };
         });
-      } else if (found && deleteComment) {
+      } else if (deleteComment) {
         item.comment = "";
         return {
           ...item,

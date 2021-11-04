@@ -21,11 +21,9 @@
     display: flex;
     flex-direction: row;
     cursor: pointer;
-}
-
-.checkcircle-outlineicon:hover{
-    background-color: whitesmoke;
-    border-radius: 7px;
+    min-width: 500px;
+    border-bottom: 1px solid #C0C0C0;
+    margin-bottom: 5px;
 }
 
 
@@ -49,10 +47,6 @@
 
 .MuiTabs-flexContainer{
     border-bottom: 1px solid gray;
-}
-
-.checkcircle-outlineicon{
-    min-width: 200px
 }
 
 .react-swipeable-view-container{
@@ -80,12 +74,22 @@
     }
 }
 
-.btn-submit{
-    .css-1sszw6i-MuiButtonBase-root-MuiButton-root{
-        color: white !important;
-        background-color: #d32f2f !important;
+.button-css{
+    .MuiButton-contained{
         height: 38px;
         padding: 10px;
         border-radius: 8px;
+    }
+    .MuiButton-outlined{
+        border: 2px solid lightskyblue;
+        height: 38px;
+        padding: 10px;
+        border-radius: 8px;
+    }
+}
+.btn-submit{
+    .MuiButton-containedError{
+        color: white !important;
+        background-color: #d32f2f !important;
     }
 }
