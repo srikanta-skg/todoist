@@ -31,7 +31,7 @@ export const Dashboard = (
         {showSideBar && <SideBar navigate={navigate} />}
         <Switch>
           <Route path={`${url}`} exact component={PageNotFound} />
-          <Route path={`${url}/Inbox`} component={SideBar} />
+          <Route path={`${url}/Inbox`} component={AddTask} />
           <Route path={`${url}/Today`} component={AddTask} />
           <Route path={`${url}/Upcoming`} component={PageNotFound} />
         </Switch>
@@ -43,7 +43,7 @@ export const Dashboard = (
 const PageNotFound = () => {
   return (
     <div style={{ textAlign: "center", width: "100%" }}>
-      Page Not Found! siuggdy~
+      Page Not Found!
     </div>
   );
 };

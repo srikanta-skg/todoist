@@ -109,13 +109,13 @@ class SwipingTabs extends React.Component {
     this.setState({ value: "", valueDec: "", comment: "" });
   };
 
-  taskComplete = (idx) => {
+  taskComplete = (idx, deleteComment) => {
     const todoList = storageService().getObject("todoList");
-    let array = todoList.map((item) => {
+    todoList.map((item) => {
       var found = item?.subtask?.find(function (element) {
         return element?.index == idx;
       });
-      if (found) {
+      if (found && !deleteComment) {
         item?.subtask?.splice(idx - 1, 1);
         item?.subtask?.map((item, idx) => {
           item.index = idx + 1;
@@ -123,10 +123,15 @@ class SwipingTabs extends React.Component {
             ...item,
           };
         });
+      } else if (found && deleteComment) {
+        item.comment = "";
+        return {
+          ...item,
+        };
       }
     });
-    this.props.setTodoList(array);
-    storageService().setObject("todoList", array);
+    this.props.setTodoList(todoList);
+    storageService().setObject("todoList", todoList);
   };
 
   render() {
@@ -153,7 +158,7 @@ class SwipingTabs extends React.Component {
             {!this.props.addTaskBlock && (
               <AddTaskBlock setAddTaskBlock={this.onCancle} />
             )}
-            {!isEmpty(this.props?.taskbar) && (
+            {!isEmpty(this.props.taskbar) && (
               <TaskBar
                 todoList={this.props.taskbar[0]?.subtask || []}
                 taskComplete={this.taskComplete}
@@ -166,7 +171,7 @@ class SwipingTabs extends React.Component {
                 handleChange={this.handleChangeTaskBox}
                 handleChangeDec={this.handleChangeDec}
                 onCancle={this.onCancle}
-                onSubmit={this.onSubmit}
+                onSubmit={() => this.onSubmit(false)}
                 value={value}
                 valueDec={valueDec}
                 disabled={value?.length > 0 ? false : true}
@@ -174,8 +179,11 @@ class SwipingTabs extends React.Component {
             )}
           </div>
           <div style={Object.assign({}, styles.slide, styles.slide2)}>
-            {!isEmpty(this.props?.taskbar) && (
-              <CommentTextRender taskbar={this.props.taskbar} />
+            {!isEmpty(this.props.taskbar) && (
+              <CommentTextRender
+                taskbar={this.props.taskbar}
+                deleteComment={this.taskComplete}
+              />
             )}
             <CommentBox
               onSubmit={() => this.onSubmit(true)}
