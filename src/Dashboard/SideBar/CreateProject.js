@@ -1,10 +1,26 @@
 import "./Style.scss";
-import React, { useState } from "react";
-import { MultiSelect } from "react-multi-select-component";
+import React, { useEffect, useState } from "react";
+import isEmpty from "lodash/isEmpty";
 import WVBottomSheet from "../Task/WVBottomSheet.js";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import Tooltip from "react-tooltip-lite";
+import Switch from "@mui/material/Switch";
+import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
+import { storageService } from "../Utility/function";
+
+const CreateProjectFunc = (value, navigate) => {
+  const existingProjects = storageService().getObject("todoProjects");
+  if (isEmpty(existingProjects)) {
+    value.projectID = 1;
+    storageService().setObject("todoProjects", [value]);
+  } else {
+    value.projectID = existingProjects.length + 1;
+    existingProjects.push(value);
+    storageService().setObject("todoProjects", existingProjects);
+  }
+  navigate(`/home/project/${value.projectID}`);
+};
 
 const Title = () => (
   <div className="create-project-title">
@@ -19,20 +35,42 @@ const Title = () => (
   </div>
 );
 
-const Children = () => {
-  const [selectedColor, setSelectedColor] = useState();
-  console.log("selectedColor", selectedColor);
+const Children = ({ onClose, navigate }) => {
+  const [selectedColor, setSelectedColor] = useState('red');
+  const [projectName, setProjectName] = useState();
+  const [disabled, setDisabled] = useState(true);
+  const label = { inputProps: { "aria-label": "Switch demo" } };
+  useEffect(() => {
+    if (projectName && selectedColor) setDisabled(false);
+  }, [projectName]);
+
+  const onSubmit = () => {
+    CreateProjectFunc({ projectName, selectedColor }, navigate);
+    onClose();
+  };
   return (
     <div>
       <h4>Name</h4>
-      <TextField id="outlined-basic" label="" variant="outlined" fullWidth />
+      <TextField
+        id="outlined-basic"
+        label=""
+        onChange={(e) => setProjectName(e.target.value)}
+        variant="outlined"
+        fullWidth
+      />
       <h4>color</h4>
-      <DropDownComp selectedOption={(ele) => setSelectedColor(ele)} />
+      <DropDownComp selectedOption={(ele) => setSelectedColor(ele || 'red')} />
+      <br />
+      <div>
+        <Switch {...label} />
+        Add to favorites
+      </div>
+      <SubmitBtn onSubmit={onSubmit} onCancle={onClose} disabled={disabled} />
     </div>
   );
 };
 
-export const CreateProject = ({ openDialog, onClose }) => {
+export const CreateProject = ({ openDialog, onClose, navigate }) => {
   return (
     <div className="create-project">
       {
@@ -40,7 +78,7 @@ export const CreateProject = ({ openDialog, onClose }) => {
           isOpen={openDialog}
           onClose={onClose}
           title={<Title />}
-          children={<Children />}
+          children={<Children navigate={navigate} onClose={onClose} />}
         />
       }
     </div>
@@ -63,6 +101,37 @@ export const DropDownComp = ({ selectedOption }) => {
           <option value="yellow">🟡 Yellow</option>
         </select>
       </form>
+    </div>
+  );
+};
+
+const SubmitBtn = ({ onSubmit, onCancle, disabled }) => {
+  return (
+    <div
+      className={disabled ? "button-css" : "button-css btn-submit"}
+      style={{
+        position: "absolute",
+        bottom: 10,
+        right: 0,
+        display: "flex",
+        borderTop: "1px solid #bdbdbd",
+        width: "100%",
+        justifyContent: "right",
+        padding: "10px",
+      }}
+    >
+      <Button onClick={onCancle} variant="outlined">
+        Cancle
+      </Button>
+      <span style={{ marginRight: "10px" }} />
+      <Button
+        onClick={onSubmit}
+        disabled={disabled}
+        variant="contained"
+        color="error"
+      >
+        Add Task
+      </Button>
     </div>
   );
 };
