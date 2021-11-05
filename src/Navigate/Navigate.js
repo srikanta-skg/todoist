@@ -8,19 +8,10 @@ export function NavigateFunc(pathname, data = {}) {
     toState,
   };
 
-  if (data.edit) {
-    this.history.replace({
-      pathname: pathname,
-      search: data.searchParams || "",
-      params: data.params || {},
-      state: data.state || {},
-    });
-  } else {
-    this.history.push({
-      pathname: pathname,
-      search: data.searchParams  || "",
-      params: data.params || {},
-      state: data.state || {},
-    });
-  }
+  this.history.push({
+    pathname: pathname,
+    search: data.searchParams || "",
+    params: data.params || {},
+    state: data.state || {},
+  });
 }
