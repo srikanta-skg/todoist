@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Header } from "../Dashboard/Components/Header.js";
 import { SideBar } from "../Dashboard/SideBar/SideBar.js";
-import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 import { NavigateFunc } from "../Navigate/Navigate";
 import { AddTask } from "./Task/AddTask";
+import { ProjectPage } from "../Dashboard/Project/ProjectPage.js"
 
 // Using Implicit function with out return keyword.
 export const Dashboard = (
@@ -11,7 +12,6 @@ export const Dashboard = (
   { showSideBarDefault = true }
 ) => {
   const [showSideBar, setShowSideBar] = useState(showSideBarDefault);
-  const [sideBarPath, setSideBarPath] = useState("");
   const {
     match: { url },
     location,
@@ -34,6 +34,7 @@ export const Dashboard = (
           <Route path={`${url}/Inbox`} component={AddTask} />
           <Route path={`${url}/Today`} component={AddTask} />
           <Route path={`${url}/Upcoming`} component={PageNotFound} />
+          <Route path={`${url}/project/:ProjectId`} component={ProjectPage} />
         </Switch>
       </div>
     </>
