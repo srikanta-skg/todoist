@@ -3,6 +3,7 @@ import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import SwipeableViews from "react-swipeable-views";
 import { Taskbox } from "../Task/TaskBox.js";
+import { Time } from "../Task/function"
 import {
   AddTaskBlock,
   TaskBar,
@@ -93,7 +94,7 @@ class SwipingTabs extends React.Component {
             title: this.state.value,
             details: this.state.valueDec,
             index: item?.subtask?.length + 1,
-            createdTime: "", // Time(),
+            createdTime: Time(),
             complitionTime: "",
           };
           item?.subtask.push(subtask);
@@ -203,8 +204,8 @@ class SwipingTabs extends React.Component {
   }
 }
 
-const DemoTabs = (props) => {
+const SlidingTabs = (props) => {
   return <SwipingTabs {...props} />;
 };
 
-export default DemoTabs;
+export default SlidingTabs;
