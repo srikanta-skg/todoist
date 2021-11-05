@@ -7,10 +7,15 @@ import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { blue, lightGreen, purple } from "@mui/material/colors";
 import { CreateProject } from "./CreateProject";
+import { storageService } from "../Utility/function";
+import isEmpty from "lodash/isEmpty";
 
 export const SideBar = ({ navigate }) => {
   const [showProjects, setShowProjects] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
+  const projectList = isEmpty(storageService().getObject("todoProjects"))
+    ? []
+    : storageService().getObject("todoProjects");
 
   const onChange = () => {
     setOpenDialog(!openDialog);
@@ -44,7 +49,25 @@ export const SideBar = ({ navigate }) => {
           +
         </div>
       </div>
-      <CreateProject openDialog={openDialog} onClose={onChange} />
+      {showProjects &&
+        projectList.map((item) => {
+          return (
+            <div onClick={() => navigate(`/home/project/${item?.projectID}`)}>
+              {" "}
+              <span
+                style={{ backgroundColor: item?.selectedColor }}
+                className="project-itemcolor"
+              />
+              {item.projectName.substring(0, 10)}{" "}
+            </div>
+          );
+        })}
+
+      <CreateProject
+        navigate={navigate}
+        openDialog={openDialog}
+        onClose={onChange}
+      />
     </div>
   );
 };
