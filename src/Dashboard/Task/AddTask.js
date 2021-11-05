@@ -1,21 +1,71 @@
+import "./Style.scss";
 import React, { useEffect, useState } from "react";
-import { Time } from "./function";
+import { Time, FilterTodayTaskOnly } from "./function";
 import WVBottomSheet from "./WVBottomSheet";
 import { Taskbox } from "./TaskBox";
-import "./Style.scss";
-import DemoTabs from "./Tabs";
+import SlidingTabs from "./Tabs";
 import { storageService } from "../Utility/function";
 import { AddTaskBlock, TaskBar } from "./mini-components/minicomponents.js";
 import isEmpty from "lodash/isEmpty";
+import { ReturnTodoList } from "../Project/functions";
 
-export const AddTask = (props, { event }) => {
-  const [todoList, setTodoList] = useState([]);
+const TaskList = () =>
+  isEmpty(storageService().getObject("todoList"))
+    ? []
+    : storageService().getObject("todoList");
+
+export const AddTask = (props, {}) => {
+  const ProjectData = props?.ProjectData || TaskList();
+  const [todoList, setTodoList] = useState(ProjectData);
   const [addTaskBlock, setAddTaskBlock] = useState(false);
   const [value, setValue] = useState("");
   const [valueDec, setValueDec] = useState("");
   const [openDialog, setOpenDialog] = useState(false);
   const [bottomsheet, setBottomSheet] = useState([]);
   const [isBottom, setIsBottom] = useState(false);
+  const {
+    match: { url },
+  } = props?.propsValue || props;
+  const pathName = url?.split("/")[2] || "";
+  const isProject = url?.split("/")[3];
+  if (!isProject) {
+    storageService().set("currentProjectID", 0);
+  } else {
+    storageService().set("currentProjectID", isProject);
+  }
+
+  useEffect(() => {
+    todoListUpdateFunc();
+  }, [pathName, url]);
+  const todoListUpdateFunc = (list) => {
+    let isToday, isIndox, isProjectTest;
+    if (pathName === "Today") {
+      isToday = true;
+    } else if (pathName === "Inbox") {
+      isIndox = true;
+    } else if (pathName === "project") {
+      isProjectTest = true;
+    }
+
+    if (!list) list = TaskList();
+    if (pathName === "Today" && isToday) {
+      isToday = false;
+      setTodoList(FilterTodayTaskOnly(list));
+      console.log("yes");
+    } else if (pathName === "Inbox" && isIndox) {
+      isIndox = false;
+      setTodoList(list);
+    } else if (pathName === "project" && isProject) {
+      isProjectTest = false;
+      setTodoList(
+        ReturnTodoList(
+          storageService().get("currentProjectID") || isProject,
+          list
+        )
+      );
+    }
+  };
+
 
   useEffect(() => {
     if (openDialog) {
@@ -24,11 +74,6 @@ export const AddTask = (props, { event }) => {
       setBottomSheet(arr);
     }
   }, [todoList]);
-
-  const {
-    match: { url },
-  } = props;
-  const pathName = url.split("/")[2];
 
   const onClose = (idx) => {
     const arr = [...todoList];
@@ -50,18 +95,20 @@ export const AddTask = (props, { event }) => {
   };
 
   const onSubmit = () => {
-    todoList.push({
+    const list = TaskList();
+    list.push({
       title: value,
       details: valueDec,
-      index: todoList.length + 1,
+      index: list.length + 1,
       createdTime: Time(),
       complitionTime: "",
+      currentProjectID: storageService().get("currentProjectID") || 0,
       subtask: [],
     });
-    setTodoList(todoList);
+    storageService().setObject("todoList", list);
     setValue("");
     setValueDec("");
-    storageService().setObject("todoList", todoList);
+    todoListUpdateFunc(list);
   };
 
   const taskComplete = (idx, taskDates) => {
@@ -72,7 +119,7 @@ export const AddTask = (props, { event }) => {
       return {
         ...item,
       };
-    });
+    }); // Fix the Multi Project Deleting Task Issue Pending
     setTodoList(todoList);
     setIsBottom(true);
     setAddTaskBlock(!addTaskBlock);
@@ -121,9 +168,9 @@ export const AddTask = (props, { event }) => {
                 setTodoList={setTodoList}
               />
             }
-            subtitle={"Description goes here bro"}
+            subtitle={"Description goes here"}
             children={
-              <DemoTabs
+              <SlidingTabs
                 setAddTaskBlock={() => setAddTaskBlock(!addTaskBlock)}
                 addTaskBlock={addTaskBlock}
                 taskbar={bottomsheet}
