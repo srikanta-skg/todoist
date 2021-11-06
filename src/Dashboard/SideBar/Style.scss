@@ -1,0 +1,64 @@
+.sidebar{
+    min-width: 180px;
+    max-width: 200px;
+    background-color:#fafafa;
+    height: 100vh;
+
+    div{
+        margin-left: 30px;
+        margin-bottom: 5px;
+        padding: 5px 10px;
+        border-radius: 7px;
+        cursor: pointer;
+    }
+
+    div:hover{
+        background-color:#E8E8E8;
+    }
+
+    span{
+        position: absolute;
+        margin: 4px 0 0 10px
+    }
+
+    .sidebar-project:hover{
+        .hide{
+            display: block;
+            font-size: 28px;
+            margin: -5px 0 0 10px;
+            color: #808080;
+        }
+    }
+
+    .sidebar-project{
+        display: flex;
+        margin:  15% 0 0 25px;
+
+        .hide{
+            display: none;
+        }
+        
+    }
+    h4{
+        margin-top: 5px;
+        margin-left: 10px;
+    }
+}
+
+    .create-project-title{  // Fix this Z-index Issue
+        border-bottom: 1px solid #DCDCDC;
+        display: flex;
+        justify-content: space-between;
+
+        .MuiDialog-root .wv-bottomsheet{
+            z-index: 0 !important;
+        }
+    }
+    .project-itemcolor{
+        position: relative !important;
+        margin: 0 10px  0 0 !important;
+        border-radius: 50%;
+        width: 10px;
+        height: 10px;
+        display: inline-block;
+    }

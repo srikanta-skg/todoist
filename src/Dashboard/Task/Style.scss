@@ -1,0 +1,96 @@
+.addtask-header{
+    margin: 4px 0 0 5px;
+    position: absolute;
+    cursor: pointer;
+    font-weight: 400;
+    color: gray;
+
+}
+
+.addtask-header:hover{
+    color: red;
+}
+
+.addtask-icon:hover{
+    background-color: whitesmoke;
+    border-radius: 7px;
+}
+
+.checkcircle-outlineicon{
+    padding: 5px 10px 0 10px;
+    display: flex;
+    position: relative;
+    flex-direction: row;
+    cursor: pointer;
+    min-width: 500px;
+    border-bottom: 1px solid #C0C0C0;
+    margin-bottom: 5px;
+}
+
+
+.addtask-box{
+    border: 1px solid gray;
+    display: flex;
+    flex-direction: column;
+    width: 520px;
+    padding: 5px;
+    border-radius: 8px;
+
+
+    .css-5xn5lu-MuiInputBase-root-MuiInput-root:before {
+        border-bottom: none !important;
+    }
+
+}
+.MuiTabs-indicator{
+    width: 230px !important;
+}
+
+.MuiTabs-flexContainer{
+    border-bottom: 1px solid gray;
+}
+
+.react-swipeable-view-container{
+    min-height: 500px;
+}
+
+
+.comment-box{
+    position: absolute;
+    bottom: 10px;
+
+    .MuiFormControl-root{
+        width: 100%;
+    }
+
+    .css-1kty9di-MuiFormLabel-root-MuiInputLabel-root.Mui-focused  {
+        border: none !important;
+        color: black !important;
+    }
+
+    .btn-comment{
+        position: absolute;
+        bottom: 10px;
+        right: 10px;
+    }
+}
+
+.button-css{
+    .MuiButton-contained{
+        height: 38px;
+        padding: 10px;
+        border-radius: 8px;
+    }
+    .MuiButton-outlined{
+        border: 2px solid lightskyblue;
+        height: 38px;
+        padding: 10px;
+        border-radius: 8px;
+    }
+}
+.btn-submit{
+    .MuiButton-containedError{
+        color: white !important;
+        background-color: #d32f2f !important;
+    }
+}
