@@ -2,18 +2,13 @@ import React from 'react';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import { isEmpty } from 'lodash';
 import PropTypes from 'prop-types';
 import 'react-circular-progressbar/dist/styles.css';
 import './WVBottomSheet.scss';
 
 const WVBottomSheet = ({
-  dataAidSuffix,
   isOpen,
   onClose, // Callback for when bottomsheet is being closed
-  buttonLayout, // Sets button layout - stacked/stackedOR/horizontal [default=horizontal]
-  button1Props, // Props for button 1 (type, title, onClick, classes)
-  button2Props = {},// Props for button 2 (type, title, onClick, classes)
   title, // Title for bottomsheet
   subtitle, // Subtitle for bottomsheet (shows below title)
   children, // Allows for addition of any kind of content within the BottomSheet DialogContent box
@@ -23,7 +18,6 @@ const WVBottomSheet = ({
 }) => {
   return (
     <Dialog
-      data-aid={`wv-bottomsheet-${dataAidSuffix}`}
       id="wv-bottomsheet"
       open={isOpen}
       onClose={onClose}
@@ -35,16 +29,15 @@ const WVBottomSheet = ({
       <DialogContent>
         <div
           className={`wv-bottomsheet-content ${classes.content}`}
-          data-aid={`wv-bottomsheet-content-${dataAidSuffix}`}
         >
           <div className="wv-bc-left">
             {title &&
-              <div className={`wv-bcl-title ${classes.title}`} data-aid={`wv-bcl-title-${dataAidSuffix}`}>
+              <div className={`wv-bcl-title ${classes.title}`}>
                 {title}
               </div>
             }
             {subtitle &&
-              <Subtitle className={classes.subtitle} dataAidSuffix={dataAidSuffix}>
+              <Subtitle className={classes.subtitle}>
                 {subtitle}
               </Subtitle>
             }
@@ -85,7 +78,6 @@ const Subtitle = ({ children, className, dataAidSuffix }) => {
 WVBottomSheet.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   onClose: PropTypes.func,
-  buttonLayout: PropTypes.oneOf(['stacked', 'stackedOR', 'horizontal']),
   title: PropTypes.node,
   subtitle: PropTypes.node,
   children: PropTypes.node
@@ -93,10 +85,6 @@ WVBottomSheet.propTypes = {
 
 WVBottomSheet.defaultProps = {
   onClose: () => {},
-  buttonLayout: 'horizontal',
-  button1Props: {
-    type: 'primary',
-  },
   classes: {},
 };
 
